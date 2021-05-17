@@ -17,10 +17,11 @@ namespace GradeBook.Tests
             //act
             var result = book.GetStatistics();
 
-            //assert
+            //assert 
             Assert.Equal(85.6, result.Average, 1);
             Assert.Equal(77.3, result.Low, 1);
             Assert.Equal(90.5, result.High, 1);
+            Assert.Equal('B', result.Letter);
         }
     }
 }
