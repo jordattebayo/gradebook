@@ -7,14 +7,29 @@ namespace GradeBook
     {
         static void Main(string[] args)
         {
-            var book = new Book("Jordo's grade book");
+            IBook book = new DiskBook("Jordo's grade book");
             book.GradeAdded += OnGradeAdded;
 
-            while(true)
+            EnterGrades(book);
+
+            var stats = book.GetStatistics();
+
+            Console.WriteLine(InMemoryBook.CATEGORY);
+            Console.WriteLine($"The name of the book is {book.Name}");
+            Console.WriteLine($"The lowest grade is {stats.Low}");
+            Console.WriteLine($"The highest grade is {stats.High}");
+            Console.WriteLine($"The average grade is {stats.Average}");
+            Console.WriteLine($"The average Letter grade is {stats.Letter}");
+
+        }
+
+        private static void EnterGrades(IBook book)
+        {
+            while (true)
             {
                 Console.WriteLine("Enter a grade or 'q' to quit");
                 var input = Console.ReadLine();
-                if(input == "q")
+                if (input == "q")
                 {
                     break;
                 }
@@ -24,26 +39,15 @@ namespace GradeBook
                     var grade = double.Parse(input);
                     book.AddGrade(grade);
                 }
-                catch(ArgumentException ex)
+                catch (ArgumentException ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
-                catch(FormatException ex)
+                catch (FormatException ex)
                 {
                     Console.WriteLine(ex.Message);
                 }
             }
-            
-            var stats = book.GetStatistics();
-            
-            Console.WriteLine(Book.CATEGORY);
-            Console.WriteLine($"The name of the book is {book.Name}");
-            Console.WriteLine($"The lowest grade is {stats.Low}");
-            Console.WriteLine($"The lowest grade is {stats.Low}");
-            Console.WriteLine($"The highest grade is {stats.High}");
-            Console.WriteLine($"The average grade is {stats.Average}");
-            Console.WriteLine($"The average Letter grade is {stats.Letter}");
-
         }
 
         static void OnGradeAdded(object sender, EventArgs e)
